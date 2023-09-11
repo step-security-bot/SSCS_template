@@ -1,0 +1,34 @@
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: slsa-attestation-image-policy
+spec:
+
+  images:
+  - glob: ghcr.io/mchmarny/**
+
+  authorities:
+  - keyless:
+      url: https://fulcio.sigstore.dev
+      identities:
+      - issuer: https://token.actions.githubusercontent.com
+        subjectRegExp: "^https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v[0-9]+.[0-9]+.[0-9]+$"
+
+    attestations:
+    - name: must-have-slsa
+      predicateType: https://slsa.dev/provenance/v0.2
+      policy:
+        type: cue
+        data: |
+          predicateType: "https://slsa.dev/provenance/v0.2"
+          predicate: {
+            builder: {
+              if: =~"^https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v[0-9]+.[0-9]+.[0-9]+$"
+            }
+            invocation: {
+              configSource: {
+                entryPoint: ".github/workflows/on-tag.yaml"
+                uri: =~"^git\\+https://github.com/mchmarny/s3cme@refs/tags/v[0-9]+.[0-9]+.[0-9]+$"
+              }
+            }
+          }
