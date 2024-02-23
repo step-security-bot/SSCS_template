@@ -118,6 +118,6 @@ jobs:
         severity: ${{ inputs.scan_severity }}
         exit-code: '1'
     - name: Upload Report
-      uses: github/codeql-action/upload-sarif@168b99b3c22180941ae7dbdd5f5c9678ede476ba  # v2.11.6
+      uses: github/codeql-action/upload-sarif@47b3d888fe66b639e431abf22ebca059152f1eea # v3.24.5
       with:
         sarif_file: 'trivy-results.sarif'
