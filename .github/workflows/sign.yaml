@@ -25,6 +25,11 @@ jobs:
       packages: write
     steps:
 
+    - name: Harden Runner
+      uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+      with:
+        egress-policy: audit
+
     - name: Install Cosign
       uses: sigstore/cosign-installer@e1523de7571e31dbe865fd2e80c5c7c23ae71eb4  # v3.4.0
       with:

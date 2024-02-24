@@ -26,6 +26,11 @@ jobs:
       image: ${{ steps.conf.outputs.image }}
       digest: ${{ steps.conf.outputs.digest }}
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+      with:
+        egress-policy: audit
+
     - name: Export Config
       id: conf
       run: |
@@ -54,6 +59,11 @@ jobs:
     permissions:
       actions: read
     steps:
+
+    - name: Harden Runner
+      uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+      with:
+        egress-policy: audit
 
     - name: Checkout Code
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
